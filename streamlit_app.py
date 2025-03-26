@@ -101,7 +101,7 @@ location_cluster_dict = {'Zone 1': 0, 'Zone 2': 1, 'Zone 3': 2, 'Zone 4': 3, 'Zo
 # ---- Load Accident Data ----
 @st.cache_data
 def load_data():
-    df = pd.read_csv('merged_cleaned_decoded_2023.csv')
+    df = pd.read_csv('merged_cleaned_decoded_2023.csv', low_memory=False)
     return df
 
 df_geo = load_data()
