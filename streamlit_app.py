@@ -13,6 +13,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
+import os
 
 # ---- PAGE CONFIG ----
 st.set_page_config(page_title="Urban Traffic Dashboard", layout="wide")
@@ -21,9 +22,49 @@ st.set_page_config(page_title="Urban Traffic Dashboard", layout="wide")
 st.markdown(
     """
     <style>
-    .stMetric {text-align: center;}
-    .metric-label { font-size: 18px; color: gray; }
-    .st-c0 {background-color: #f9f9f9; padding: 10px; border-radius: 8px;}
+    /* Hide default Streamlit elements */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+
+    /* Main app and sidebar styling */
+    .stApp {
+        background-color: #0E1117;
+        color: #FAFAFA;
+    }
+    section[data-testid="stSidebar"] {
+        background-color: #1E1E1E;
+    }
+
+    /* Metric card styling */
+    .stMetric {
+        background-color: #262730;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        color: #FAFAFA;
+    }
+
+    /* Tab button styling */
+    button[data-baseweb="tab"] {
+        background-color: #262730;
+        color: #FAFAFA;
+        border-color: #262730;
+    }
+
+    /* Custom styling for Streamlit buttons */
+    div.stButton button {
+        background-color: #262730 !important;
+        color: #FAFAFA !important;
+        border: none !important;
+    }
+    div.stButton button:hover {
+        background-color: #1E1E1E !important;
+    }
+
+    /* Text styling */
+    h1, h2, h3, h4, h5, p, label {
+        color: #FAFAFA;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -133,15 +174,13 @@ with tab1:
         if None in [road_type, weather, light, vehicle_type, day_of_week, location_cluster]:
             st.sidebar.warning("⚠️ Please select all accident details before predicting!")
         else:
-            features = np.array([[
-                road_type_dict[road_type],
-                weather_dict[weather],
-                light_dict[light],
-                vehicle_type_dict[vehicle_type],
-                day_dict[day_of_week],
-                time_cleaned,
-                location_cluster_dict[location_cluster]
-            ]])
+            features = np.array([[road_type_dict[road_type],
+                                  weather_dict[weather],
+                                  light_dict[light],
+                                  vehicle_type_dict[vehicle_type],
+                                  day_dict[day_of_week],
+                                  time_cleaned,
+                                  location_cluster_dict[location_cluster]]])
 
             prediction = model.predict(features)
             severity_map = {0: 'Fatal', 1: 'Serious', 2: 'Slight'}
